@@ -6,6 +6,8 @@ afastando. O que vem pela frente chega só pelas **notas do navegador** e pela m
 
 Jogo de celular, em retrato. É um jogo diferente do Rally 2D, não uma porta dele.
 
+**Jogue:** https://abraaovilanova.github.io/Rally3d-mobile/ — abra no celular, em retrato.
+
 ## Controles
 
 | Gesto | O que faz |
@@ -21,7 +23,14 @@ Jogo de celular, em retrato. É um jogo diferente do Rally 2D, não uma porta de
 
 O sensor de inclinação exige contexto seguro (HTTPS) e, no iOS 13+, permissão
 concedida a partir de um toque — o jogo pede na tela inicial. Negar não bloqueia nada:
-o arrasto do polegar é um caminho equivalente.
+o arrasto do polegar é um caminho equivalente. Em `npm run dev` na rede local não há
+HTTPS, então lá vale o arrasto; para testar a inclinação, use a versão publicada.
+
+## Publicar
+
+`npm run deploy` — compila e recria o branch `gh-pages` a partir do `dist`. O branch é
+só o build, sem histórico. O Pages serve o jogo em `/Rally3d-mobile/`, que é de onde
+vem o `base` no `vite.config.ts`.
 
 ## Onde ler antes de mexer
 

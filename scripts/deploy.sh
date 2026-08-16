@@ -16,7 +16,15 @@ git init -q
 git checkout -qb gh-pages
 git add -A
 git commit -qm "Build de $rev"
-git push -qf "$remote" gh-pages
+
+# O branch é publicado de um repositório temporário, que não herda credencial
+# nenhuma. Com remote HTTPS, o token do `gh` resolve; com SSH, a chave já resolve.
+if [[ "$remote" == https://* ]] && command -v gh >/dev/null; then
+  git -c credential.helper='!f() { echo username=x-access-token; echo "password=$(gh auth token)"; }; f' \
+    push -qf "$remote" gh-pages
+else
+  git push -qf "$remote" gh-pages
+fi
 
 cd ..
 rm -rf .deploy
