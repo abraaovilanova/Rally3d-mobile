@@ -100,13 +100,13 @@ export const TUNING = {
    *
    * Como a Câmera olha para trás, este número é exatamente **quanta Pista ainda não
    * percorrida o jogador enxerga** — ela aparece no rodapé da tela, grande e curta.
-   * A 520 px/s, 640px dão ~1,2s de aviso; sob Impulso, ~0,85s.
+   * A 520 px/s, 780px dão ~1,5s de aviso; sob Impulso, ~1,0s.
    *
    * É a válvula que regula quanto o jogo é de memória e quanto é de reação. Subir
    * muito daqui esvazia a Câmera Invertida e transforma as Notas em enfeite — o jogo
    * vira uma corrida comum. Ver docs/adr/0001-camera-invertida.md
    */
-  cameraAhead: 640,
+  cameraAhead: 780,
 
   /** Altura da Câmera acima da Pista, em px. Mais alta = mais traçado legível ao fundo. */
   cameraHeight: 150,
@@ -120,8 +120,12 @@ export const TUNING = {
   /** Altura do horizonte na tela, como fração da altura. */
   horizonAt: 0.4,
 
-  /** Distância focal como fração da largura da tela. */
-  focalRatio: 1.35,
+  /**
+   * Distância focal como fração da largura da tela. Sobe junto com `cameraAhead`
+   * para o Carro não encolher: afastar a Câmera sem fechar o ângulo deixa a única
+   * coisa que o jogador vê chegando pequena demais para ler.
+   */
+  focalRatio: 1.45,
 
   /** Comprimento de uma faixa da zebra da borda, em px. */
   rumbleLength: 110,
