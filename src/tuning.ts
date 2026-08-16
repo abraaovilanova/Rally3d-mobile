@@ -95,11 +95,21 @@ export const TUNING = {
   /** Quantos px de Pista valem um "metro" na leitura das Notas. */
   pixelsPerMeter: 10,
 
-  /** Distância da Câmera Invertida à frente do Carro, em px. */
-  cameraAhead: 420,
+  /**
+   * Distância da Câmera Invertida à frente do Carro, em px.
+   *
+   * Como a Câmera olha para trás, este número é exatamente **quanta Pista ainda não
+   * percorrida o jogador enxerga** — ela aparece no rodapé da tela, grande e curta.
+   * A 520 px/s, 640px dão ~1,2s de aviso; sob Impulso, ~0,85s.
+   *
+   * É a válvula que regula quanto o jogo é de memória e quanto é de reação. Subir
+   * muito daqui esvazia a Câmera Invertida e transforma as Notas em enfeite — o jogo
+   * vira uma corrida comum. Ver docs/adr/0001-camera-invertida.md
+   */
+  cameraAhead: 640,
 
-  /** Altura da Câmera acima da Pista, em px. */
-  cameraHeight: 130,
+  /** Altura da Câmera acima da Pista, em px. Mais alta = mais traçado legível ao fundo. */
+  cameraHeight: 150,
 
   /** Quanto a Câmera acompanha a Posição Lateral do Carro (0 = fixa no meio). */
   cameraLateralFollow: 0.55,
