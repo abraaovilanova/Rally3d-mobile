@@ -111,8 +111,13 @@ export const TUNING = {
   /** Altura da Câmera acima da Pista, em px. Mais alta = mais traçado legível ao fundo. */
   cameraHeight: 150,
 
-  /** Quanto a Câmera acompanha a Posição Lateral do Carro (0 = fixa no meio). */
-  cameraLateralFollow: 0.55,
+  /**
+   * Quanto a Câmera acompanha a Posição Lateral do Carro (0 = fixa no meio da Pista).
+   * O que ela *não* acompanha é o que o jogador vê: é o deslocamento do Carro na tela
+   * que mostra de que lado da Pista ele está. Acompanhar demais deixa o Carro colado
+   * no centro e a Posição Lateral — uma das duas fontes de Tempo — vira invisível.
+   */
+  cameraLateralFollow: 0.25,
 
   /** Distância de Pista visível ao fundo, em px. */
   viewDistance: 3400,

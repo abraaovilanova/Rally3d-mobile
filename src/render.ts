@@ -37,13 +37,23 @@ export function render(ctx: CanvasRenderingContext2D, game: Game, input: Input):
 
   const pose = carPose(game);
   const sCam = pose.s + TUNING.cameraAhead;
-  const camPoint = samplePath(pose.path, sCam);
-  const camPos = offsetPoint(camPoint, pose.lat * TUNING.cameraLateralFollow);
 
-  const yaw = camPoint.heading + Math.PI;
+  // A Câmera é uma haste rígida presa ao Carro: ela fica à frente dele, na direção
+  // dele, e gira **junto** com ele. Tirar a direção do ponto da Pista sob a Câmera
+  // faria ela entrar na curva 780px antes do Carro e girar sozinha — o jogador veria
+  // a curva pela rotação da imagem, não pela Nota.
+  const carPoint = samplePath(pose.path, pose.s);
+  const boomX = Math.cos(carPoint.heading) * TUNING.cameraAhead;
+  const boomY = Math.sin(carPoint.heading) * TUNING.cameraAhead;
+
+  // A Câmera acompanha só parte da Posição Lateral: o resto é o deslocamento do Carro
+  // na tela, que é como o jogador enxerga de que lado da Pista está.
+  const camPos = offsetPoint(carPoint, pose.lat * TUNING.cameraLateralFollow);
+
+  const yaw = carPoint.heading + Math.PI;
   const cam: Camera = {
-    x: camPos.x,
-    y: camPos.y,
+    x: camPos.x + boomX,
+    y: camPos.y + boomY,
     fx: Math.cos(yaw),
     fy: Math.sin(yaw),
     cx: w / 2,
@@ -128,7 +138,13 @@ function drawRoad(ctx: CanvasRenderingContext2D, game: Game, cam: Camera, sCam: 
   for (let i = 0; i < sections.length - 1; i++) {
     const a = sections[i];
     const b = sections[i + 1];
-    if (a.left.depth < 1 || b.left.depth < 1) continue;
+    // Numa curva a Câmera sai da Pista, e trechos inteiros ficam atrás dela.
+    // Basta um canto atrás do plano da Câmera para a projeção do quadrilátero explodir.
+    if (
+      Math.min(a.outerLeft.depth, a.outerRight.depth, b.outerLeft.depth, b.outerRight.depth) < 1
+    ) {
+      continue;
+    }
 
     const stripe = Math.floor(a.s / TUNING.rumbleLength) % 2 === 0;
 
